@@ -9,11 +9,16 @@ if ($this->ion_auth->in_group('Doctor')) {
 }
 ?>
 
+<style>
+    .cke_editor_editor1 {
+        min-height: 400px;
+    }
+</style>
 
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="col-md-8">
+        <section class="col-md-12">
             <header class="panel-heading">
                 <?php
                 if (!empty($prescription->id))
@@ -106,9 +111,9 @@ if ($this->ion_auth->in_group('Doctor')) {
                                     </div>
                                 <?php } ?>
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label class="control-label"><?php echo lang('history'); ?></label>
-                                    <textarea class="form-control ckeditor" id="editor1" name="symptom" value="" rows="50" cols="20"><?php
+                                    <textarea class="form-control ckeditor" id="editor1" name="symptom" value="" rows="350" cols="200"><?php
                                         if (!empty($setval)) {
                                             echo set_value('symptom');
                                         }
@@ -120,9 +125,9 @@ if ($this->ion_auth->in_group('Doctor')) {
 
 
 
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-12">
                                     <label class="control-label"><?php echo lang('note'); ?></label>
-                                    <textarea class="form-control ckeditor" id="editor3" name="note" value="" rows="30" cols="20"><?php
+                                    <textarea class="form-control ckeditor" id="editor3" name="note" value="" rows="330" cols="200" ><?php
                                         if (!empty($setval)) {
                                             echo set_value('note');
                                         }
@@ -231,6 +236,16 @@ if ($this->ion_auth->in_group('Doctor')) {
 <script type="text/javascript">
     $(document).ready(function () {
         //   $(".medicine").html("");
+
+        CKEDITOR.replace( 'editor1', {
+            height: 400
+        } );
+
+        CKEDITOR.replace( 'editor3', {
+            height: 400
+        } );
+
+        
 
 
         $("select").on("select2:unselect", function (e) {
