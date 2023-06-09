@@ -72,18 +72,7 @@
                                         </span>
                                     </p>
                                 </div>
-                                <div class="col-md-12 row details" style="">
-                                    <p>
-                                        <label class="control-label"> <?php echo lang('address'); ?> </label>
-                                        <span style="text-transform: uppercase;"> : 
-                                            <?php
-                                            if (!empty($patient_info)) {
-                                                echo $patient_info->address . ' <br>';
-                                            }
-                                            ?>
-                                        </span>
-                                    </p>
-                                </div>
+                                
                                 <div class="col-md-12 row details" style="">
                                     <p>
                                         <label class="control-label"><?php echo lang('phone'); ?>  </label>
@@ -129,23 +118,36 @@
                                     </p>
                                 </div>
 
-                                <div class="col-md-12 row details">
+                                <div class="col-md-12 row details" style="">
                                     <p>
-                                        <label class="control-label"><?php echo lang('doctor'); ?>  </label>
+                                        <label class="control-label"> <?php echo lang('address'); ?> </label>
                                         <span style="text-transform: uppercase;"> : 
                                             <?php
-                                            if (!empty($payment->doctor)) {
-                                                $doc_details = $this->doctor_model->getDoctorById($payment->doctor);
-                                                if (!empty($doc_details)) {
-                                                    echo $doc_details->name . ' <br>';
-                                                } else {
-                                                    echo $payment->doctor_name . ' <br>';
-                                                }
+                                            if (!empty($patient_info)) {
+                                                echo $patient_info->address . ' <br>';
                                             }
                                             ?>
                                         </span>
                                     </p>
                                 </div>
+                                
+                                <!-- <div class="col-md-12 row details">
+                                    <p>
+                                        <label class="control-label"><?php echo lang('doctor'); ?>  </label>
+                                        <span style="text-transform: uppercase;"> : 
+                                            <?php
+                                            // if (!empty($payment->doctor)) {
+                                            //     $doc_details = $this->doctor_model->getDoctorById($payment->doctor);
+                                            //     if (!empty($doc_details)) {
+                                            //         echo $doc_details->name . ' <br>';
+                                            //     } else {
+                                            //         echo $payment->doctor_name . ' <br>';
+                                            //     }
+                                            // }
+                                            ?>
+                                        </span>
+                                    </p>
+                                </div> -->
 
 
 
