@@ -131,6 +131,7 @@ class Pharmacy extends MX_Controller {
     }
 
     public function addPayment() {
+        // echo '<pre>'; print_r($_POST); exit;
         $id = $this->input->post('id');
         $item_selected = array();
         $quantity = array();
@@ -144,9 +145,10 @@ class Pharmacy extends MX_Controller {
             $item_quantity_array = array();
             $item_quantity_array = array_combine($item_selected, $quantity);
         }
+        $i = 0;
         foreach ($item_quantity_array as $key => $value) {
             $current_medicine = $this->db->get_where('medicine', array('id' => $key))->row();
-            $unit_price = $current_medicine->s_price;
+            $unit_price = $_POST['add_price'][$i]; //$current_medicine->s_price;
             $cost = $current_medicine->price;
             $current_stock = (string) $current_medicine->quantity;
             $qty = $value;
@@ -156,6 +158,7 @@ class Pharmacy extends MX_Controller {
             }
             $item_price[] = $unit_price * $value;
             $category_name[] = $key . '*' . $unit_price . '*' . $qty . '*' . $cost;
+            $i++;
         }
 
         $category_name = implode(',', $category_name);
@@ -202,6 +205,9 @@ class Pharmacy extends MX_Controller {
                     'amount_received' => $amount_received,
                     'status' => 'unpaid',
                 );
+
+                //echo '<pre>'; print_r($data); exit;
+
                 $this->pharmacy_model->insertPayment($data);
                 $inserted_id = $this->db->insert_id();
                 foreach ($item_quantity_array as $key => $value) {

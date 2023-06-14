@@ -63,18 +63,23 @@
                                                 foreach ($medicines as $medicine) {
                                                     if ($medicine->quantity > 0) {
                                                         ?>
-                                                        <option class="ooppttiioonn" data-id="<?php echo $medicine->id; ?>" data-s_price="<?php echo (float) $medicine->s_price; ?>" data-m_name = "<?php echo $medicine->name; ?>" data-c_name = "<?php echo $medicine->company; ?>" data-cs = "<?php echo $medicine->quantity; ?>" value="<?php echo $medicine->id; ?>"
+                                                        <option class="ooppttiioonn" data-id="<?php echo $medicine->id; ?>" data-m_name = "<?php echo $medicine->name; ?>" data-c_name = "<?php echo $medicine->company; ?>" data-cs = "<?php echo $medicine->quantity; ?>" value="<?php echo $medicine->id; ?>"
                                                         <?php
                                                         if (!empty($payment->category_name)) {
                                                             $category_name = $payment->category_name;
                                                             $category_name1 = explode(',', $category_name);
                                                             foreach ($category_name1 as $category_name2) {
                                                                 $category_name3 = explode('*', $category_name2);
+                                                                // echo '<pre>'; print_r($category_name3);exit;
+                                                            
                                                                 if ($category_name3[0] == $medicine->id) {
 
                                                                     echo 'data-qtity=' . $category_name3[2];
                                                                 }
+
                                                             }
+
+
                                                         }
                                                         ?>
 
@@ -85,14 +90,22 @@
                                                                     foreach ($category_name1 as $category_name2) {
                                                                         $category_name3 = explode('*', $category_name2);
                                                                         if ($category_name3[0] == $medicine->id) {
-                                                                            echo 'selected';
+                                                                            echo 'selected ';
+
+                                                                            echo 'data-s_price='.$category_name3[1];
+
                                                                         }
                                                                     }
                                                                 }
                                                                 ?>
+                                                                
+                                                                
                                                                 >
 
                                                             <?php echo $medicine->name; ?>
+
+
+
                                                         </option>
                                                         <?php
                                                     }
@@ -238,7 +251,7 @@
 
         });
         $.each($('select.multi-select option:selected'), function () {
-            var unit_price = $(this).data('s_price');
+            var unit_price = $('#add_price-'+id).val(); //$(this).data('s_price');
             var cs = $(this).data('cs');
             var id = $(this).data('id');
             var qtity = $(this).data('qtity');
@@ -251,7 +264,7 @@
 
                 } else {
 
-                    $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + id + '"><div class="name pos_element"> Name: ' + $(this).data("m_name") + '</div><div class="company pos_element">Company: ' + $(this).data("c_name") + '</div><div class="price pos_element">price: ' + $(this).data('s_price') + '</div><div class="current_stock pos_element">Current Stock: ' + $(this).data('cs') + '</div><div class="quantity pos_element">quantity:<div></div>')
+                    $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + id + '"><div class="name pos_element"> Name: ' + $(this).data("m_name") + '</div><div class="company pos_element">Company: ' + $(this).data("c_name") + '</div><div class="price pos_element">price: <input class="remove" type="text" name="add_price[]" id="add_price-'+ id +'" style="margin: -2px 0px;" value="' + $(this).data('s_price') + '"></div><div class="current_stock pos_element">Current Stock: ' + $(this).data('cs') + '</div><div class="quantity pos_element">quantity:<div></div>')
                 }
                 var input2 = $('<input>').attr({
                     type: 'text',
@@ -276,10 +289,28 @@
                     $.each($('select.multi-select option:selected'), function () {
                         var id1 = $(this).data('id');
                         qty = $('#idinput-' + id1).val();
-                        var ekokk = $(this).data('s_price');
+                        var ekokk = $('#add_price-'+id1).val();//$(this).data('s_price');
                         total = total + qty * ekokk;
                     });
                     tot = total;
+                    var discount = $('#dis_id').val();
+                    var gross = tot - discount;
+                    $('#editPaymentForm').find('[name="subtotal"]').val(tot).end()
+                    $('#editPaymentForm').find('[name="grsss"]').val(gross)
+                });
+
+                $('#add_price-' + id).keyup(function () {
+                    var qty = 0;
+                    var total = 0;
+                    $.each($('select.multi-select option:selected'), function () {
+                        var id1 = $(this).data('id');
+                        qty = $('#idinput-' + id1).val();
+                        var ekokk = $('#add_price-'+id1).val(); //$(this).data('s_price');
+                        total = total + qty * ekokk;
+                    });
+
+                    tot = total;
+
                     var discount = $('#dis_id').val();
                     var gross = tot - discount;
                     $('#editPaymentForm').find('[name="subtotal"]').val(tot).end()
@@ -323,7 +354,7 @@
 
             });
             $.each($('select.multi-select option:selected'), function () {
-                var unit_price = $(this).data('s_price');
+                var unit_price = $('#add_price-'+id).val(); //$(this).data('s_price');
                 var cs = $(this).data('cs');
                 var id = $(this).data('id');
                 if ($('#idinput-' + id).length)
@@ -335,7 +366,7 @@
 
                     } else {
 
-                        $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + id + '"><div class="name pos_element"> Name: ' + $(this).data("m_name") + '</div><div class="company pos_element">Company: ' + $(this).data("c_name") + '</div><div class="price pos_element">price: ' + $(this).data('s_price') + '</div><div class="current_stock pos_element">Current Stock: ' + $(this).data('cs') + '</div><div class="quantity pos_element">quantity:<div></div>')
+                        $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + id + '"><div class="name pos_element"> Name: ' + $(this).data("m_name") + '</div><div class="company pos_element">Company: ' + $(this).data("c_name") + '</div><div class="price pos_element">price: <input class="remove" type="text" name="add_price[]" id="add_price-' + id + '" style="margin: -2px 0px;" value="' + $(this).data('s_price') + '"></div><div class="current_stock pos_element">Current Stock: ' + $(this).data('cs') + '</div><div class="quantity pos_element">quantity:<div></div>')
                     }
                     var input2 = $('<input>').attr({
                         type: 'text',
@@ -361,7 +392,26 @@
                         $.each($('select.multi-select option:selected'), function () {
                             var id1 = $(this).data('id');
                             qty = $('#idinput-' + id1).val();
-                            var ekokk = $(this).data('s_price');
+                            var ekokk = $('#add_price-'+id1).val(); //$(this).data('s_price');
+                            total = total + qty * ekokk;
+                        });
+
+                        tot = total;
+
+                        var discount = $('#dis_id').val();
+                        var gross = tot - discount;
+                        $('#editPaymentForm').find('[name="subtotal"]').val(tot).end()
+                        $('#editPaymentForm').find('[name="grsss"]').val(gross)
+                    });
+
+
+                    $('#add_price-' + id).keyup(function () {
+                        var qty = 0;
+                        var total = 0;
+                        $.each($('select.multi-select option:selected'), function () {
+                            var id1 = $(this).data('id');
+                            qty = $('#idinput-' + id1).val();
+                            var ekokk = $('#add_price-'+id1).val(); //$(this).data('s_price');
                             total = total + qty * ekokk;
                         });
 
@@ -373,7 +423,8 @@
                         $('#editPaymentForm').find('[name="grsss"]').val(gross)
                     });
                 });
-                var curr_val = $(this).data('s_price') * $('#idinput-' + id).val();
+                // var curr_val = $(this).data('s_price') * $('#idinput-' + id).val();
+                var curr_val = $('#add_price-'+id).val() * $('#idinput-' + id).val();
                 tot = tot + curr_val;
             });
             var discount = $('#dis_id').val();
@@ -389,13 +440,21 @@
             var ggggg = 0;
             amount = $('#subtotal').val();
             val_dis = this.value;
-<?php if ($discount_type == 'percentage') { ?>
+            <?php if ($discount_type == 'percentage') { ?>
                 ggggg = amount - amount * val_dis / 100;
-<?php } ?>
-<?php if ($discount_type == 'flat') { ?>
+            <?php } ?>
+            <?php if ($discount_type == 'flat') { ?>
                 ggggg = amount - val_dis;
-<?php } ?>
+            <?php } ?>
             $('#editPaymentForm').find('[name="grsss"]').val(ggggg)
+        });
+
+        $('#add_price').keyup(function () {
+            var val_dis = $(this).val();
+            var qty = $("#idinput-2866").val();
+            var subtotal = val_dis * qty;
+            $('#subtotal').val(subtotal);
+           
         });
     });
 
