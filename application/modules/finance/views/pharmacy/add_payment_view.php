@@ -96,6 +96,8 @@
 
                                                                         }
                                                                     }
+                                                                }else{
+                                                                    echo 'data-s_price='.$medicine->s_price;
                                                                 }
                                                                 ?>
                                                                 
