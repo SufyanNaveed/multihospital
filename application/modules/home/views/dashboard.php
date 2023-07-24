@@ -1218,6 +1218,13 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             </li>
 
                             <li>
+                                <a href="stock/addNewView">
+                                    <i class="fa fa-exchange"></i>
+                                    <span><?php echo lang('stock_transfer'); ?></span>
+                                </a>
+                            </li>
+
+                            <li>
                                 <a href="request">
                                     <i class="fa fa-sitemap"></i>
                                     <span><?php echo lang('requests'); ?></span>

@@ -17,8 +17,11 @@ class Medicine_model extends CI_model {
     }
 
     function getMedicine() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        if($this->session->userdata('hospital_id')){
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        }
         $this->db->order_by('id', 'asc');
+        $this->db->group_by('name');
         $query = $this->db->get('medicine');
         return $query->result();
     }

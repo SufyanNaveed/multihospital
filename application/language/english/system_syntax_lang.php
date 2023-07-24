@@ -1051,6 +1051,8 @@ $lang['add_new_package'] = 'Add New Package';
 $lang['edit_package'] = 'Edit Package';
 $lang['all_packages'] = 'All Packages';
 
+$lang['stock_transfer'] = 'Stock Transfer';
+
 $lang['permitted_modules'] = 'Permitted Modules';
 
 $lang['package'] = 'Package';
