@@ -43,64 +43,63 @@ class Stock extends MX_Controller {
         $qty = explode(',',$this->input->post('qty'));
         $medicines = $this->input->post('medicines');
 
-
+        // echo '<pre>'; print_r($_POST); //exit;
         for($i = 0; $i < count($medicines); $i++){
             
             $this->db->where('id', $medicines[$i]);
             $this->db->where('hospital_id', $from_hospital);
             $from_hospital_result = $this->db->get('medicine')->row_array();
+            // echo '<pre>'; print_r($from_hospital_result);//exit;
 
-            // $this->db->where('id', $medicines[$i]);
-            $this->db->where('hospital_id', $to_hospital);
-            $this->db->where('name', $from_hospital_result['name']);
-            $query = $this->db->get('medicine');
-            // echo '<pre>'; print_r($query);exit;
-
-            if($query->num_rows() > 0){
-                $result = $query->row_array();
-                $data['quantity'] = $result['quantity'] + $qty[$i];
-
+            if($from_hospital_result){
                 // $this->db->where('id', $medicines[$i]);
-                $this->db->where('name', $from_hospital_result['name']);
                 $this->db->where('hospital_id', $to_hospital);
-                $this->db->update('medicine', $data);
+                $this->db->where('name', $from_hospital_result['name']);
+                $query = $this->db->get('medicine');
+                // echo '<pre>'; print_r($query);//exit;
+
+                if($query->num_rows() > 0){
+                    $result = $query->row_array();
+                    $data['quantity'] = $result['quantity'] + $qty[$i];
+                    // echo '<pre>'; print_r($to_hospital);exit;
+
+                    // $this->db->where('id', $medicines[$i]);
+                    $this->db->where('name', $from_hospital_result['name']);
+                    $this->db->where('hospital_id', $to_hospital);
+                    $this->db->update('medicine', $data);
+                }else{
+                    
+                    $data = array(
+                        'name' => $from_hospital_result['name'],
+                        'category' => $from_hospital_result['category'],
+                        'price' => $from_hospital_result['price'],
+                        'box' => $from_hospital_result['box'],
+                        's_price' => $from_hospital_result['s_price'],
+                        'quantity' => $qty[$i],
+                        'generic' => $from_hospital_result['generic'],
+                        'company' => $from_hospital_result['company'],
+                        'effects' => $from_hospital_result['effects'],
+                        'e_date' => $from_hospital_result['e_date'],
+                        'add_date' => $from_hospital_result['add_date'],
+                        'hospital_id' => $to_hospital,
+                    );
+
+                    $this->db->insert('medicine', $data);
+                }
+
+                $from_hospital_data['quantity'] = $from_hospital_result['quantity'] - $qty[$i];
+                $this->db->where('id', $medicines[$i]);
+                $this->db->where('hospital_id', $from_hospital);
+                $this->db->update('medicine', $from_hospital_data);
             }else{
-                
-                $data = array(
-                    'name' => $from_hospital_result['name'],
-                    'category' => $from_hospital_result['category'],
-                    'price' => $from_hospital_result['price'],
-                    'box' => $from_hospital_result['box'],
-                    's_price' => $from_hospital_result['s_price'],
-                    'quantity' => $qty[$i],
-                    'generic' => $from_hospital_result['generic'],
-                    'company' => $from_hospital_result['company'],
-                    'effects' => $from_hospital_result['effects'],
-                    'e_date' => $from_hospital_result['e_date'],
-                    'add_date' => $from_hospital_result['add_date'],
-                    'hospital_id' => $to_hospital,
-                );
-
-                $this->db->insert('medicine', $data);
+                $this->session->set_flashdata('feedback', $from_hospital.' not exist this medicine.');
+                redirect('stock/addNewView');
             }
-
-            $from_hospital_data['quantity'] = $from_hospital_result['quantity'] - $qty[$i];
-            $this->db->where('id', $medicines[$i]);
-            $this->db->where('hospital_id', $from_hospital);
-            $this->db->update('medicine', $from_hospital_data);
         }
 
         $this->session->set_flashdata('feedback', 'Updated');
         redirect('stock/addNewView');
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     public function addNew() {
@@ -126,9 +125,6 @@ class Stock extends MX_Controller {
                 $module = implode(',', $module);
             }
         }
-
-
-
 
         $language_array = array('english', 'arabic', 'spanish', 'french', 'italian', 'portuguese');
 
