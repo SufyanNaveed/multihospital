@@ -91,11 +91,8 @@ class Stock extends MX_Controller {
                 $this->db->where('id', $medicines[$i]);
                 $this->db->where('hospital_id', $from_hospital);
                 $this->db->update('medicine', $from_hospital_data);
-            }else{
-
-                $this->db->where('id', $from_hospital);
-                $from_hospital_result = $this->db->get('hospital')->row_array();
-                $this->session->set_flashdata('feedback', $from_hospital_result['name'].' does not exist this medicine.');
+            }else{ 
+                $this->session->set_flashdata('feedback', 'Does not exist this medicine.');
                 redirect('stock/addNewView');
             }
         }
