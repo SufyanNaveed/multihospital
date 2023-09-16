@@ -1,5 +1,12 @@
 <!--sidebar end-->
 <!--main content start-->
+
+<style>
+.table > tbody > tr.notify_medicine > td,
+tr.notify_medicine td.sorting_1{
+    background-color: #f0caca !important;
+}
+</style>
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
@@ -94,8 +101,10 @@
                         }
                         foreach ($medicines as $medicine) {
                             $i = $i + 1;
+
+                            $class = $medicine->is_view == 0 ? 'notify_medicine' : '';
                             ?>
-                            <tr class="">
+                            <tr class="<?php echo $class; ?> ">
                                 <td class="medici_name"><?php echo $i; ?></td>
                                 <td class="medici_name"><?php echo $medicine->name; ?></td>
                                 <td> <?php echo $medicine->category; ?></td>
@@ -525,6 +534,20 @@
 <script>
     $(document).ready(function () {
         $(".flashmessage").delay(3000).fadeOut(100);
-    });
+
+        setTimeout(function() { 
+            $.ajax({
+                url: '<?php echo base_url(); ?>medicine/editMedicineNotificationByJason',
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+            }).success(function (response) {
+                $('tr').removeClass('notify_medicine');
+                $('.medicine_transfer_notify').html(0);    
+            }); 
+        }, 5000);
+        
+});
+
 </script>
 

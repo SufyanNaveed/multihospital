@@ -498,6 +498,54 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
                         <!-- report notification end -->
+                        <!-- medicine notification start-->
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) { ?> 
+                            <?php if (in_array('medicine', $this->modules)) { ?>
+                                <li id="header_notification_bar" class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                        <i class="fa fa-exchange"></i>
+                                        <span class="badge bg-success medicine_transfer_notify">                          
+                                            <?php
+                                            $this->db->where('hospital_id', $this->hospital_id);
+                                            // $this->db->where('created_at', date('m/d/y'));
+                                            $this->db->where('is_view', 0);
+                                            $query = $this->db->get('medicine_transfer_notification');
+                                            $query = $query->result();
+                                            // echo '<pre>'; print_r($query); exit;
+                                            // foreach ($query as $medicine) {
+                                            //     $medicine_number[] = '1';
+                                            // }
+                                            // if (!empty($medicine_number)) {
+                                            //     echo $medicine_number = array_sum($medicine_number);
+                                            // } else {
+                                            //     $medicine_number = 0;
+                                            //     echo $medicine_number;
+                                            // }
+
+                                           echo $medicine_number = $query ? count($query): 0;
+                                            ?>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu extended notification">
+                                        <div class="notify-arrow notify-arrow-yellow"></div>
+                                        <li>
+                                            <p class="yellow"><?php
+                                                echo $medicine_number . ' ';
+                                                if ($medicine_number <= 1) {
+                                                    echo lang('medicines_transfer');
+                                                } else {
+                                                    echo lang('medicines_transfer');
+                                                }
+                                                ?> </p>
+                                        </li>
+                                        <li>
+                                            <a href="medicine"><p class="green"><?php echo lang('see_all_medicines'); ?></p></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?> 
+                        <!-- medicine notification end -->
                     </ul>
                 </div>
                 <div class="top-nav ">

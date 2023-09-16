@@ -43,7 +43,6 @@ class Stock extends MX_Controller {
         $qty = explode(',',$this->input->post('qty'));
         $medicines = $this->input->post('medicines');
 
-        // echo '<pre>'; print_r($_POST); //exit;
         for($i = 0; $i < count($medicines); $i++){
             
             $this->db->where('id', $medicines[$i]);
@@ -67,6 +66,13 @@ class Stock extends MX_Controller {
                     $this->db->where('name', $from_hospital_result['name']);
                     $this->db->where('hospital_id', $to_hospital);
                     $this->db->update('medicine', $data);
+
+                    $notifi_data = array( 
+                        'medicine_id' => $medicines[$i],
+                        'hospital_id' => $to_hospital,
+                        'is_view' => 0,
+                    );
+                    $this->db->insert('medicine_transfer_notification', $notifi_data);
                 }else{
                     
                     $data = array(
@@ -85,12 +91,28 @@ class Stock extends MX_Controller {
                     );
 
                     $this->db->insert('medicine', $data);
+                    $insert_id = $this->db->insert_id();
+                    
+                    $notifi_data = array( 
+                        'medicine_id' => $insert_id,
+                        'hospital_id' => $to_hospital,
+                        'is_view' => 0,
+                    );
+                    $this->db->insert('medicine_transfer_notification', $notifi_data);
                 }
 
                 $from_hospital_data['quantity'] = $from_hospital_result['quantity'] - $qty[$i];
                 $this->db->where('id', $medicines[$i]);
                 $this->db->where('hospital_id', $from_hospital);
                 $this->db->update('medicine', $from_hospital_data);
+
+                $notifi_data = array( 
+                    'medicine_id' => $medicines[$i],
+                    'hospital_id' => $from_hospital,
+                    'is_view' => 0,
+                );
+                $this->db->insert('medicine_transfer_notification', $notifi_data);
+
             }else{ 
                 $this->session->set_flashdata('feedback', 'Does not exist this medicine.');
                 redirect('stock/addNewView');
@@ -100,8 +122,7 @@ class Stock extends MX_Controller {
         $this->session->set_flashdata('feedback', 'Updated');
         redirect('stock/addNewView');
     }
-    
-    
+
     public function addNew() {
         $id = $this->input->post('id');
         $name = $this->input->post('name');

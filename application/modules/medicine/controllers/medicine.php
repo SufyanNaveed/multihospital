@@ -223,6 +223,12 @@ class Medicine extends MX_Controller {
         echo json_encode($data);
     }
 
+    function editMedicineNotificationByJason() { 
+        $id = $this->session->userdata('hospital_id');
+        $data['medicine'] = $this->medicine_model->updateMedicineNotificationByJason($id);
+        echo true;
+    }
+
     function delete() {
         $id = $this->input->get('id');
         $this->medicine_model->deleteMedicine($id);

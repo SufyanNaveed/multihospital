@@ -509,6 +509,7 @@ $lang['donor_registerred_today'] = 'Donor Registered Today';
 $lang['donors_registerred_today'] = 'Donor Registered Today';
 $lang['medicine_registerred_today'] = 'Medicine Registered Today';
 $lang['medicines_registered_today'] = 'Medicines Registered Today';
+$lang['medicines_transfer'] = 'Medicine(s) Transfered';
 
 
 

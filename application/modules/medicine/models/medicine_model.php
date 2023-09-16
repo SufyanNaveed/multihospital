@@ -18,9 +18,10 @@ class Medicine_model extends CI_model {
 
     function getMedicine() {
         if($this->session->userdata('hospital_id')){
-            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->where('medicine.hospital_id', $this->session->userdata('hospital_id'));
         }
-        $this->db->order_by('id', 'asc');
+        $this->db->join('medicine_transfer_notification', 'medicine.id = medicine_transfer_notification.medicine_id');
+        $this->db->order_by('medicine.id', 'asc');
         $this->db->group_by('name');
         $query = $this->db->get('medicine');
         return $query->result();
@@ -99,6 +100,12 @@ class Medicine_model extends CI_model {
     function updateMedicine($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('medicine', $data);
+    }
+
+    function updateMedicineNotificationByJason($id) {
+        $this->db->where('hospital_id', $id);
+        $this->db->update('medicine_transfer_notification', ['is_view' => 1]);
+        return true;
     }
 
     function insertMedicineCategory($data) {
