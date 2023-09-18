@@ -20,7 +20,8 @@ class Medicine_model extends CI_model {
         if($this->session->userdata('hospital_id')){
             $this->db->where('medicine.hospital_id', $this->session->userdata('hospital_id'));
         }
-        $this->db->join('medicine_transfer_notification', 'medicine.id = medicine_transfer_notification.medicine_id');
+        $this->db->select('medicine.*, medicine_transfer_notification.is_view');
+        $this->db->join('medicine_transfer_notification', 'medicine.id = medicine_transfer_notification.medicine_id', 'left');
         $this->db->order_by('medicine.id', 'asc');
         $this->db->group_by('name');
         $query = $this->db->get('medicine');

@@ -101,10 +101,10 @@ tr.notify_medicine td.sorting_1{
                         }
                         foreach ($medicines as $medicine) {
                             $i = $i + 1;
-
+                            $class = '';
                             $class = $medicine->is_view == 0 ? 'notify_medicine' : '';
                             ?>
-                            <tr class="<?php echo $class; ?> ">
+                            <tr class="<?php echo $medicine->is_view == 0 && $medicine->is_view != '' ? 'notify_medicine' : ''; ?>">
                                 <td class="medici_name"><?php echo $i; ?></td>
                                 <td class="medici_name"><?php echo $medicine->name; ?></td>
                                 <td> <?php echo $medicine->category; ?></td>

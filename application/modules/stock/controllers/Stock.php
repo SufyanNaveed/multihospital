@@ -38,6 +38,8 @@ class Stock extends MX_Controller {
 
     public function transfer() {
         $post_data = $_POST;
+        // echo '<pre>'; print_r($post_data); exit;
+
         $from_hospital = $this->input->post('from_hospital');
         $to_hospital = $this->input->post('to_hospital');
         $qty = explode(',',$this->input->post('qty'));
@@ -48,7 +50,7 @@ class Stock extends MX_Controller {
             $this->db->where('id', $medicines[$i]);
             $this->db->where('hospital_id', $from_hospital);
             $from_hospital_result = $this->db->get('medicine')->row_array();
-            // echo '<pre>'; print_r($from_hospital_result);//exit;
+            // echo '<pre>'; print_r($from_hospital_result);exit;
 
             if($from_hospital_result){
                 // $this->db->where('id', $medicines[$i]);

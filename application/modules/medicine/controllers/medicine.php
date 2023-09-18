@@ -24,6 +24,7 @@ class Medicine extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['pagee_number'] = $page_number;
         $data['p_n'] = '0';
+        // echo '<pre>'; print_r($data); exit;
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('medicine', $data);
         $this->load->view('home/footer'); // just the header file
